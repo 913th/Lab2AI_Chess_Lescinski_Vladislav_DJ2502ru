@@ -31,7 +31,9 @@
 | Человек | красные    | снизу        | мышью, ходит первым |
 | ИИ      | чёрные     | сверху       | Minimax |
 
-![Начальная расстановка] (<img width="583" height="581" alt="Снимок экрана 2026-10-19 133358" src="https://github.com/user-attachments/assets/ba2d5fbe-7bb8-4f65-8294-c0097ba3eab5" />)
+**Начальная расстановка** 
+
+<img width="583" height="581" alt="Снимок экрана 2026-10-19 133358" src="https://github.com/user-attachments/assets/ba2d5fbe-7bb8-4f65-8294-c0097ba3eab5" />
 
 
 **Правила движения:**
