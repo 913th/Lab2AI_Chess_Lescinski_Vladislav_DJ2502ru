@@ -5,7 +5,7 @@ public static class Evaluator
     public const int PawnValue = 100, RookValue = 500, KingValue = 100000;
     public const int MateScore = 1000000;
 
-   
+
     public static int Evaluate(GameState s, bool aiIsWhite)
     {
         int score = 0; 
