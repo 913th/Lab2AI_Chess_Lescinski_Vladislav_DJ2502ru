@@ -35,7 +35,7 @@ public class GameState
         return s;
     }
 
-    // Применение хода: возвращает НОВОЕ состояние
+   
     public GameState Apply(Move m)
     {
         var s = Clone();
@@ -45,7 +45,7 @@ public class GameState
         s.Board[m.To] = piece;
         s.Board[m.From] = 0;
 
-        // превращение пешки в ладью
+     
         if (piece == Pawn && m.To / N == N - 1) s.Board[m.To] = Rook;
         if (piece == -Pawn && m.To / N == 0) s.Board[m.To] = -Rook;
 
@@ -56,7 +56,7 @@ public class GameState
 
     static bool In(int r, int c) => r >= 0 && r < N && c >= 0 && c < N;
 
-    // Ходы без проверки на шах
+  
     List<Move> PseudoMoves(bool white)
     {
         var moves = new List<Move>();
@@ -129,7 +129,7 @@ public class GameState
         return false;
     }
 
-    // Все допустимые ходы текущего игрока (король не остаётся под шахом)
+   
     public List<Move> GetLegalMoves()
     {
         var result = new List<Move>();
@@ -138,14 +138,14 @@ public class GameState
         return result;
     }
 
-    // Проверка терминального состояния
+    
     public GameStatus GetStatus()
     {
         if (GetLegalMoves().Count == 0)
         {
             if (IsInCheck(WhiteToMove))
-                return WhiteToMove ? GameStatus.BlackWins : GameStatus.WhiteWins; // мат
-            return GameStatus.Draw; // пат
+                return WhiteToMove ? GameStatus.BlackWins : GameStatus.WhiteWins; 
+            return GameStatus.Draw; 
         }
         if (NoProgress >= DrawLimit) return GameStatus.Draw;
         return GameStatus.Playing;
