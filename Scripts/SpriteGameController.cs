@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpriteGameController : MonoBehaviour
 {
     [Header("Сцена")]
-    public Transform chessBoard;            // если пусто, ищется объект "ChessBoard"
-    public string humanPrefix = "Red";    // имена фигур человека начинаются с этого (они внизу)
-    public string aiPrefix = "Black";         // имена фигур ИИ (они вверху)
+    public Transform chessBoard;            
+    public string humanPrefix = "Red";    
+    public string aiPrefix = "Black";        
     [Range(1, 6)] public int searchDepth = 4;
 
     [Header("Подсветка клеток")]
@@ -23,8 +23,8 @@ public class SpriteGameController : MonoBehaviour
         public SpriteRenderer sr;
         public Vector3 pos, scale;
         public Sprite sprite;
-        public int sign;       // +1 человек, -1 ИИ
-        public int type;       // текущий тип (меняется при превращении)
+        public int sign;      
+        public int type;       
         public int origType;
     }
 
@@ -34,7 +34,7 @@ public class SpriteGameController : MonoBehaviour
 
     List<PieceInfo> pieces = new List<PieceInfo>();
     PieceInfo[] at = new PieceInfo[N * N];
-    Sprite[] rookSprite = new Sprite[2];     // [0] человек, [1] ИИ
+    Sprite[] rookSprite = new Sprite[2];    
     Vector3[] rookScale = new Vector3[2];
 
     GameState state;
@@ -45,7 +45,7 @@ public class SpriteGameController : MonoBehaviour
     Move? lastMove;
     string statusText = "", infoText = "";
 
-    // ---------- инициализация ----------
+    
     void Start()
     {
         if (chessBoard == null)
@@ -142,7 +142,7 @@ public class SpriteGameController : MonoBehaviour
         return true;
     }
 
-    // ---------- геометрия ----------
+   
     int CellAt(Vector3 w)
     {
         int col = Mathf.RoundToInt((w.x - minX) / stepX);
@@ -158,7 +158,7 @@ public class SpriteGameController : MonoBehaviour
         return new Vector3(minX + (idx % N) * stepX, minY + (idx / N) * stepY, z);
     }
 
-    // ---------- новая игра ----------
+    
     void SetupPosition()
     {
         at = new PieceInfo[N * N];
@@ -189,7 +189,7 @@ public class SpriteGameController : MonoBehaviour
         if (!ready) return;
         StopAllCoroutines();
         SetupPosition();
-        ai = new MinimaxAI(searchDepth, false); // ИИ играет сверху (отрицательные фигуры)
+        ai = new MinimaxAI(searchDepth, false); 
         selected = -1;
         lastMove = null;
         gameOver = false;
@@ -197,12 +197,12 @@ public class SpriteGameController : MonoBehaviour
         AfterMove();
     }
 
-    // ---------- ход ----------
+    
     void ExecuteMove(Move m)
     {
         var mover = at[m.From];
         var victim = at[m.To];
-        if (victim != null) victim.go.SetActive(false);   // взятие
+        if (victim != null) victim.go.SetActive(false);   
 
         at[m.To] = mover;
         at[m.From] = null;
@@ -210,7 +210,7 @@ public class SpriteGameController : MonoBehaviour
 
         state = state.Apply(m);
 
-        // превращение пешки в ладью
+        
         if (mover.type == GameState.Pawn && Mathf.Abs(state.Board[m.To]) == GameState.Rook)
         {
             int side = mover.sign > 0 ? 0 : 1;
@@ -230,13 +230,13 @@ public class SpriteGameController : MonoBehaviour
         var st = state.GetStatus();
         if (st != GameStatus.Playing) { EndGame(st); return; }
 
-        if (state.WhiteToMove) // ход человека
+        if (state.WhiteToMove)
         {
             humanTurn = true;
             legalMoves = state.GetLegalMoves();
             statusText = "Ваш ход" + (state.IsInCheck(true) ? " — ШАХ!" : "");
         }
-        else // ход ИИ
+        else 
         {
             humanTurn = false;
             StartCoroutine(AITurn());
@@ -270,7 +270,7 @@ public class SpriteGameController : MonoBehaviour
         RefreshHighlights();
     }
 
-    // ---------- ввод мышью ----------
+   
     void Update()
     {
         if (!ready || !humanTurn || gameOver) return;
@@ -283,7 +283,7 @@ public class SpriteGameController : MonoBehaviour
 
     void OnCellClick(int idx)
     {
-        if (state.Board[idx] > 0)   // своя фигура
+        if (state.Board[idx] > 0)   
         {
             selected = idx;
             RefreshHighlights();
@@ -307,7 +307,7 @@ public class SpriteGameController : MonoBehaviour
         RefreshHighlights();
     }
 
-    // ---------- подсветка ----------
+    
     bool IsTarget(int i)
     {
         foreach (var m in legalMoves)
@@ -327,7 +327,7 @@ public class SpriteGameController : MonoBehaviour
         }
     }
 
-    // ---------- простой интерфейс (IMGUI) ----------
+    
     void OnGUI()
     {
         var big = new GUIStyle(GUI.skin.label) { fontSize = 28, fontStyle = FontStyle.Bold, wordWrap = true };
