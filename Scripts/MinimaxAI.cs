@@ -20,7 +20,7 @@ public class MinimaxAI
 
         foreach (var m in moves)
         {
-            // после хода ИИ ходит противник -> минимизирующий уровень
+            
             int val = Minimax(state.Apply(m), Depth - 1, false, alpha, beta);
             if (val > bestVal) { bestVal = val; best = m; }
             alpha = Math.Max(alpha, bestVal);
@@ -34,16 +34,16 @@ public class MinimaxAI
         NodesVisited++;
         var moves = s.GetLegalMoves();
 
-        // терминальные состояния
+       
         if (moves.Count == 0)
         {
-            if (s.IsInCheck(s.WhiteToMove))   // мат
+            if (s.IsInCheck(s.WhiteToMove))   
                 return isMaximizing ? -Evaluator.MateScore - depth : Evaluator.MateScore + depth;
-            return 0;                         // пат
+            return 0;                         
         }
         if (s.NoProgress >= GameState.DrawLimit) return 0;
 
-        // ограничение глубины -> эвристика
+        
         if (depth == 0) return Evaluator.Evaluate(s, AiIsWhite);
 
         moves = Order(s, moves);
@@ -72,7 +72,7 @@ public class MinimaxAI
         }
     }
 
-    // Сначала взятия: так отсечений больше
+    
     List<Move> Order(GameState s, List<Move> moves)
     {
         moves.Sort((a, b) => Math.Abs(s.Board[b.To]).CompareTo(Math.Abs(s.Board[a.To])));
